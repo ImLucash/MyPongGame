@@ -136,11 +136,12 @@ void PauseMenu(Paddle& leftPaddle, Paddle& rightPaddle, Ball& ball, Score& updat
 	while (pausedGame == true)
 	{
 		ClearBackground(BLACK);
-		//REMOVED CLEAR BACKGROUND SO YOU SEE THE PADDLES AND BALL STILL
-		//ClearBackground(BLACK);
+		
 
 		BeginDrawing();
 		ClearBackground(BLACK);
+
+		//DRAW GAME ELEMENTS ON SCREEN
 		leftPaddle.Draw();
 		rightPaddle.Draw();
 		ball.Draw();
@@ -152,6 +153,7 @@ void PauseMenu(Paddle& leftPaddle, Paddle& rightPaddle, Ball& ball, Score& updat
 		DrawText("Press ESC to Exit Game", s_ScreenWidth / 4, s_ScreenHeight / 2 + 30, 25, WHITE);
 		DrawText("Press R to Reset", s_ScreenWidth / 4, s_ScreenHeight / 2 - 10, 25, WHITE);
 
+		//STATEMENTS TO BUTTON PRESSES
 		if (IsKeyPressed(KEY_SPACE) && !entry)
 		{
 			pausedGame = false;
@@ -170,6 +172,8 @@ void PauseMenu(Paddle& leftPaddle, Paddle& rightPaddle, Ball& ball, Score& updat
 			pausedGame = false;
 			mainGamePlay = false;
 		}
+		//END STATEMENTS TO BUTTON PRESSES
+
 
 		entry = false;
 
@@ -186,15 +190,23 @@ void EndGame(Score& updateScore)
 
 		BeginDrawing();
 		ClearBackground(BLACK);
+		
+		std::string rightInfo = "Right Score: " + std::to_string(updateScore.playerRightScore);
+		std::string leftInfo = "Left Score: " + std::to_string(updateScore.playerLeftScore);
+		
+		DrawText(leftInfo.c_str(), 10, 10, 30, RED);
+		DrawText(rightInfo.c_str(), 700, 10, 30, GREEN);
+		
+		
 		if (updateScore.playerLeftScore >= 2)
 		{
-			DrawText("LEFT PADDLE IS THE WINNER", s_ScreenWidth / 4, s_ScreenHeight / 2, 40, DARKGREEN);
-			DrawText("Press R to Reset", s_ScreenWidth / 4, s_ScreenHeight / 2 - 40, 40, WHITE);
+			DrawText("LEFT PADDLE IS THE WINNER", s_ScreenWidth / 4 - 100, s_ScreenHeight / 2, 40, RED);
+			DrawText("Press R to Reset", s_ScreenWidth / 4 - 100, s_ScreenHeight / 2 - 40, 40, WHITE);
 		}
 		else
 		{
-			DrawText("RIGHT PADDLE IS THE WINNER", s_ScreenWidth / 4, s_ScreenHeight / 2, 40, DARKGREEN);
-			DrawText("Press R to Reset", s_ScreenWidth / 4, s_ScreenHeight / 2 - 40, 40, WHITE);
+			DrawText("RIGHT PADDLE IS THE WINNER", s_ScreenWidth / 4 - 100, s_ScreenHeight / 2, 40, GREEN);
+			DrawText("Press R to Reset", s_ScreenWidth / 4 - 100, s_ScreenHeight / 2 - 40, 40, WHITE);
 		}
 		if (IsKeyPressed(KEY_R))
 		{

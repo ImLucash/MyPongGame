@@ -27,8 +27,6 @@ public:
 protected:
 
 private:
-	//Vector2 centrePosition;
 	float ballRad;
-	//Vector2 velocity;
 };
 

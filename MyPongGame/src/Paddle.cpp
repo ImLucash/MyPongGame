@@ -25,7 +25,7 @@ void Paddle::Draw()
 
 void Paddle::Movement(int up, int down, int screenH, int paddleH)
 {
-
+	//PADDLE MOVEMENT
 	if (IsKeyDown(up) && overallSize.y > 0)
 	{
 		overallSize.y -= paddleSpeed * GetFrameTime();
@@ -34,4 +34,5 @@ void Paddle::Movement(int up, int down, int screenH, int paddleH)
 	{
 		overallSize.y += paddleSpeed * GetFrameTime();
 	}
+	//END PADDLE MOVEMENT
 }

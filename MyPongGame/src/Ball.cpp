@@ -26,6 +26,7 @@ void Ball::Draw()
 
 void Ball::CollisionCheck(Paddle& lPad, Paddle& rPad)
 {
+	//CHECK LEFT PADDLE COLLISION
 	if (CheckCollisionCircleRec({ ballPositionX,ballPositionY }, ballRadius, lPad.overallSize))
 	{
 
@@ -44,6 +45,9 @@ void Ball::CollisionCheck(Paddle& lPad, Paddle& rPad)
 			}
 		}
 	}
+	//END CHECK LEFT PADDLE COLLISION
+
+	//CHECK RIGHT PADDLE COLLISION
 	if (CheckCollisionCircleRec({ ballPositionX,ballPositionY }, ballRadius, rPad.overallSize))
 	{
 		if (ballMoveX > 0)
@@ -62,11 +66,13 @@ void Ball::CollisionCheck(Paddle& lPad, Paddle& rPad)
 		}
 
 	}
+	//END CHECK RIGHT PADDLE COLLISION
 };
 
 
 void Ball::Movement(Score& score)
 {
+	//BALL MOVEMENT
 	ballPositionX += ballMoveX * ballSpeed * GetFrameTime();
 	ballPositionY += ballMoveY * ballSpeed * GetFrameTime();
 
@@ -83,11 +89,14 @@ void Ball::Movement(Score& score)
 		collisionNumber = 0;
 		ballMoveX *= -1;
 	}
+	
+
 	//TOP OF SCREEN
 	if (ballPositionY > screenHeight - ballRadius)
 	{
 		ballMoveY *= -1;
 	}
+
 	//RIGHT PADDLE WIN
 	if (ballPositionX < 0 + ballRadius)
 	{
@@ -99,6 +108,8 @@ void Ball::Movement(Score& score)
 		collisionNumber = 0;
 		ballMoveX *= -1;
 	}
+
+
 	//SCREEN BOTTOM
 	if (ballPositionY < 0 + ballRadius)
 	{
