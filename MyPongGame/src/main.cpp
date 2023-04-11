@@ -9,7 +9,7 @@ static const int s_ScreenHeight = 500;
 
 //TODO
 //Paddle Constants
-static const float paddleWidth = 5;
+static const float paddleWidth = 3;
 static const float paddleHeight = 100;
 const float paddleSpeed = 250;
 
@@ -138,8 +138,8 @@ int main()
 		leftPaddle.Movement(KEY_W, KEY_S, s_ScreenHeight, paddleHeight);
 		rightPaddle.Movement(KEY_UP, KEY_DOWN, s_ScreenHeight, paddleHeight);
 		ball.Movement(updateScore);
-		ball.CollisionCheck(leftPaddle);
-		ball.CollisionCheck(rightPaddle);
+		ball.CollisionCheck(leftPaddle, rightPaddle);
+		//ball.CollisionCheck(rightPaddle);
 	
 		
 		// Do all of our drawing in here

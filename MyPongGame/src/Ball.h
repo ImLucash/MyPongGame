@@ -13,7 +13,7 @@ public:
 	Ball(int screenHeight, int screenWidth);
 	void Movement(Score& score);
 	void Draw();
-	void CollisionCheck(Paddle& paddle);
+	void CollisionCheck(Paddle& lPad, Paddle& rPad);
 	float ballRadius;
 	float ballPositionX;
 	float ballPositionY;
