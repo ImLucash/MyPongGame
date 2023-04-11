@@ -2,16 +2,19 @@
 #include <string>
 #include "raylib.h"
 
-enum PlayerSide{LeftSide, RightSide};
+enum PlayerSide { LeftSide, RightSide };
 
 class Score
 {
 public:
-	void Draw();
+	void Draw(int baller);
 	Score();
 	void ScoreUpdate(PlayerSide playerSide);
+	int playerLeftScore;
+	int playerRightScore;
+
 protected:
-int playerLeftScore;
-int playerRightScore;
+
 private:
+
 };

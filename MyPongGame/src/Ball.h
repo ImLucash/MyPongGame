@@ -18,6 +18,7 @@ public:
 	float ballPositionX;
 	float ballPositionY;
 	float ballSpeed;
+	int ballDisplaySpeed;
 	float ballMoveX;
 	float ballMoveY;
 	int collisionNumber;
@@ -26,8 +27,8 @@ public:
 protected:
 
 private:
-	Vector2 centrePosition;
+	//Vector2 centrePosition;
 	float ballRad;
-	Vector2 velocity;
+	//Vector2 velocity;
 };
 

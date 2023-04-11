@@ -21,8 +21,13 @@ void Score::ScoreUpdate(PlayerSide playerSide)
 	}
 }
 
-void Score::Draw()
+void Score::Draw(int baller)
 {
-	std::string Info = "Right Score: " + std::to_string(playerRightScore) + " Left Score: " + std::to_string(playerLeftScore);
-	DrawText(Info.c_str(), 10, 10, 10, RED);
+	std::string rightInfo = "Right Score: " + std::to_string(playerRightScore);
+	std::string leftInfo = "Left Score: " + std::to_string(playerLeftScore);
+	std::string ballSpeedInfo = "Ball Speed: " + std::to_string(baller);
+	DrawText(leftInfo.c_str(), 10, 10, 30, RED);
+	DrawText(rightInfo.c_str(), 700, 10, 30, GREEN);
+	DrawText(ballSpeedInfo.c_str(), 400, 10, 30, PINK);
+	DrawText("Press SPACE to PAUSE", 400, 480, 15, ORANGE);
 }

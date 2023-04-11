@@ -4,164 +4,203 @@
 #include <Ball.h>
 #include "Score.h"
 
+//SCREEN HEIGHT AND WIDTH CONSTANT
 static const int s_ScreenWidth = 1000;
 static const int s_ScreenHeight = 500;
 
-//TODO
-//Paddle Constants
+//PADDLE HEIGHT AND WIDTH AND SPEED CONSTANT
 static const float paddleWidth = 3;
 static const float paddleHeight = 100;
 const float paddleSpeed = 250;
+bool inMenu = true;
+bool pausedGame = false;
+bool mainGamePlay = false;
+void MainMenu(Paddle& leftPaddle, Paddle& rightPaddle, Ball& ball, Score& updateScore);
+void PauseMenu(Paddle& leftPaddle, Paddle& rightPaddle, Ball& ball, Score& updateScore);
+void EndGame(Score& updateScore);
 
-//Left Paddle
-//float leftPaddlePosY = s_ScreenHeight / 2;
-//float leftPaddlePosX = 20;
-
-//float leftPaddleSide = leftPaddlePosX + (paddleWidth / 2);
-
-
-//Right Paddle
-//float rightPaddlePosY = s_ScreenHeight / 2;
-//float rightPaddlePosX = s_ScreenWidth - 20 - paddleWidth;
-
-
-//const float ballRadius = 10;
-//float ballPositionX = s_ScreenWidth / 2;
-//float ballPositionY = s_ScreenHeight / 2;
-//float ballSpeed = 80;
-//float ballMoveX = 250;
-//float ballMoveY = 250;
-
-//int playerLeftScore = 0;
-//int playerRightScore = 0;
-
-
-
-//struct Paddles
-//{
-//	Rectangle position;
-//	Vector2 velocity;
-//};
-
-//struct Ball
-//{
-//	
-//};
 
 int main()
 {
-	//TODO
-	//Initialize Pa
-	// Initialize the window
+	//SET SCREEN WINDOW TO HEIGHT AND WIDTH
 	InitWindow(s_ScreenWidth, s_ScreenHeight, "Raylib Game Template");
 
-	// Set the game to run at 60 fps
+	//SET FRAMES TO 60 FPS
 	SetTargetFPS(60);
-	Paddle leftPaddle( {20, s_ScreenHeight / 2 }, paddleWidth, paddleHeight, RED);
+
+	//INSTATIATING THE GAME ELEMENTS 
+	Paddle leftPaddle({ 20, s_ScreenHeight / 2 }, paddleWidth, paddleHeight, RED);
 	Paddle rightPaddle({ s_ScreenWidth - 20 - paddleWidth, s_ScreenHeight / 2 }, paddleWidth, paddleHeight, GREEN);
-	Ball ball ( s_ScreenHeight, s_ScreenWidth );
-	//ball = Ball(s_ScreenHeight, s_ScreenWidth);
+	Ball ball(s_ScreenHeight, s_ScreenWidth);
 	Score updateScore;
 
-	
-	// = { {leftPaddlePosX,leftPaddlePosY,paddleWidth,paddleHeight}, {leftPaddlePosX, leftPaddlePosY} };
-	//Paddles leftPaddle = { {leftPaddlePosX,leftPaddlePosY,paddleWidth,paddleHeight}, {leftPaddlePosX, leftPaddlePosY} };
-	//Paddles rightPaddle = { {rightPaddlePosX,rightPaddlePosY,paddleWidth,paddleHeight}, {rightPaddlePosX, rightPaddlePosY} };
 
-	// Keep the game running until the window close button or the escape key is pressed 
+	// PLAY MAIN GAME AND CONTINUE RUNNING 
 	while (!WindowShouldClose())
 	{
-		
+		//BEGIN WITH MAIN MENU
+		if (inMenu == true)
+		{
+			MainMenu(leftPaddle, rightPaddle, ball, updateScore);
+		}
 
-		//ball.Draw();
+		//WILL PAUSE THE GAME AND GO TO PAUSE FUNTION
+		if (IsKeyPressed(KEY_SPACE))
+		{
+			pausedGame = true;
+			mainGamePlay = false;
+			PauseMenu(leftPaddle, rightPaddle, ball, updateScore);
+		}
 
-		//ballPositionX += ballMoveX * GetFrameTime();
-		//ballPositionY += ballMoveY * GetFrameTime();
-		// Update any variables here before drawing
+		//MAIN CODE RUNNING GAME LOOP
+		if (pausedGame == false)
+		{
+			//CHECK OBJECTS MOVEMENT
+			leftPaddle.Movement(KEY_W, KEY_S, s_ScreenHeight, paddleHeight);
+			rightPaddle.Movement(KEY_UP, KEY_DOWN, s_ScreenHeight, paddleHeight);
+			ball.Movement(updateScore);
 
-		////LEFT PADDLE KEY PRESS MOVEMENT
-		//if (IsKeyDown(KEY_W) && leftPaddle.overallSize.y > 0)
-		//{
-		//	leftPaddle.overallSize.y -= paddleSpeed * GetFrameTime();
-		//	//leftPaddlePosY -= paddleSpeed * GetFrameTime();
-		//}
-		//if (IsKeyDown(KEY_S) && leftPaddle.overallSize.y < s_ScreenHeight - paddleHeight)
-		//{
-		//	leftPaddle.overallSize.y += paddleSpeed * GetFrameTime();
-		//	//leftPaddlePosY += paddleSpeed * GetFrameTime();
-		//}
-		//RIGHT PADDLE KEY PRESS MOVEMENT
-		//////if (IsKeyDown(KEY_UP) && rightPaddle.position.y > 0)
-		//////{
-		//////	rightPaddle.position.y -= paddleSpeed * GetFrameTime();
-		//////	//rightPaddlePosY -= paddleSpeed * GetFrameTime();
-		//////}
-		//////if (IsKeyDown(KEY_DOWN) && rightPaddle.position.y < s_ScreenHeight - paddleHeight)
-		//////{
-		//////	rightPaddle.position.y += paddleSpeed * GetFrameTime();
-		//////	//rightPaddlePosY += paddleSpeed * GetFrameTime();
-		//////}
+			//CHECK BALL COLLISION WITH PADDLES
+			ball.CollisionCheck(leftPaddle, rightPaddle);
 
-		//BALL CHECK COLLISION TO END OF MAP
-		
+			//CLEAR SCREEN TO BLACK EACH FRAME
+			ClearBackground(BLACK);
 
-		//if (ballPositionX > s_ScreenWidth - ballRadius)
-		//{
-		//	ballMoveX *= -1;
-		//}
-		//if (ballPositionY > s_ScreenHeight - ballRadius)
-		//{
-		//	ballMoveY *= -1;
-		//}
-		//if (ballPositionX < ballRadius)
-		//{
-		//	ballMoveX *= -1;
-		//}
-		//if (ballPositionY < ballRadius)
-		//{
-		//	ballMoveY *= -1;
-		//}
+			//BEGIN DRAW
+			BeginDrawing();
+
+			//DRAW OBJECTS
+			leftPaddle.Draw();
+			rightPaddle.Draw();
+			ball.Draw();
+			updateScore.Draw(ball.ballDisplaySpeed);
+
+			if (updateScore.playerLeftScore >= 2 || updateScore.playerRightScore >= 2)
+			{
+				ClearBackground(BLACK);
+				mainGamePlay = false;
+				EndGame(updateScore);
+			}
 
 
+			//STOP DRAWING
+			EndDrawing();
+		}
+	}
 
-		//std::cout << leftPaddle.overallSize.x << std::endl;
-		
+	//CLOSE GAME
+	CloseWindow();
 
-		//BALL COLLISION TO LEFT PADDLE
-		// 
+	return 0;
+}
 
-		//if (CheckCollisionCircleRec(ball.centrePosition, ball.ballRad, rightPaddle.overallSize))
-		//{
-		//	ballMoveX *= -1;
-		//};
-		
-		leftPaddle.Movement(KEY_W, KEY_S, s_ScreenHeight, paddleHeight);
-		rightPaddle.Movement(KEY_UP, KEY_DOWN, s_ScreenHeight, paddleHeight);
-		ball.Movement(updateScore);
-		ball.CollisionCheck(leftPaddle, rightPaddle);
-		//ball.CollisionCheck(rightPaddle);
-	
-		
-		// Do all of our drawing in here
+void MainMenu(Paddle& leftPaddle, Paddle& rightPaddle, Ball& ball, Score& updateScore)
+{
+
+	bool entry = true;
+	while (inMenu == true)
+	{
 		ClearBackground(BLACK);
-
 		BeginDrawing();
 
+
+
+		DrawText("Lucas Wittingslow C++ PONG ", s_ScreenWidth / 2, s_ScreenHeight / 2, 30, GREEN);
+		DrawText("MAIN MENU", s_ScreenWidth / 2 - 380, s_ScreenHeight / 2 - 50, 50, WHITE);
+		DrawText("Press SPACE to PLAY", s_ScreenWidth / 2 - 380, s_ScreenHeight / 2 + 50, 25, WHITE);
+
+		if (IsKeyPressed(KEY_SPACE) && !entry)
+		{
+			leftPaddle.overallSize.y = GetScreenHeight() / 2;
+			rightPaddle.overallSize.y = GetScreenHeight() / 2;
+			ball.ballPositionX = GetScreenWidth() / 2;
+			ball.ballPositionY = GetScreenHeight() / 2;
+			updateScore.playerLeftScore = 0;
+			updateScore.playerRightScore = 0;
+			ball.collisionNumber = 0;
+			ball.ballSpeed = 1;
+			ball.ballDisplaySpeed = 1;
+			inMenu = false;
+			mainGamePlay = true;
+
+		}
+		EndDrawing();
+		entry = false;
+	}
+}
+
+void PauseMenu(Paddle& leftPaddle, Paddle& rightPaddle, Ball& ball, Score& updateScore)
+{
+	bool entry = true;
+	
+	while (pausedGame == true)
+	{
+		ClearBackground(BLACK);
+		//REMOVED CLEAR BACKGROUND SO YOU SEE THE PADDLES AND BALL STILL
+		//ClearBackground(BLACK);
+
+		BeginDrawing();
+		ClearBackground(BLACK);
 		leftPaddle.Draw();
 		rightPaddle.Draw();
 		ball.Draw();
-		updateScore.Draw();
-		
-		
+		updateScore.Draw(ball.ballDisplaySpeed);
 
+		//SCREEN TEXT
+		DrawText("PAUSED ", s_ScreenWidth / 4, s_ScreenHeight / 2 - 90, 50, DARKGREEN);
+		DrawText("Press SPACE to Continue", s_ScreenWidth / 4, s_ScreenHeight / 2 + 70, 25, WHITE);
+		DrawText("Press ESC to Exit Game", s_ScreenWidth / 4, s_ScreenHeight / 2 + 30, 25, WHITE);
+		DrawText("Press R to Reset", s_ScreenWidth / 4, s_ScreenHeight / 2 - 10, 25, WHITE);
+
+		if (IsKeyPressed(KEY_SPACE) && !entry)
+		{
+			pausedGame = false;
+			mainGamePlay = true;
+		}
+
+		if (IsKeyPressed(KEY_ESCAPE))
+		{
+			pausedGame = false;
+			mainGamePlay = true;
+		}
+
+		if (IsKeyPressed(KEY_R) && !entry)
+		{
+			inMenu = true;
+			pausedGame = false;
+			mainGamePlay = false;
+		}
+
+		entry = false;
 
 		EndDrawing();
 	}
 
-	// Close the window
-	CloseWindow();
+}
 
-	return 0;
+void EndGame(Score& updateScore)
+{
+	bool exitEndGame = false;
+	while (!exitEndGame)
+	{
+
+		BeginDrawing();
+		ClearBackground(BLACK);
+		if (updateScore.playerLeftScore >= 2)
+		{
+			DrawText("LEFT PADDLE IS THE WINNER", s_ScreenWidth / 4, s_ScreenHeight / 2, 40, DARKGREEN);
+			DrawText("Press R to Reset", s_ScreenWidth / 4, s_ScreenHeight / 2 - 40, 40, WHITE);
+		}
+		else
+		{
+			DrawText("RIGHT PADDLE IS THE WINNER", s_ScreenWidth / 4, s_ScreenHeight / 2, 40, DARKGREEN);
+			DrawText("Press R to Reset", s_ScreenWidth / 4, s_ScreenHeight / 2 - 40, 40, WHITE);
+		}
+		if (IsKeyPressed(KEY_R))
+		{
+			exitEndGame = true;
+			inMenu = true;
+		}
+		EndDrawing();
 	}
-
-	//void DrawRectangle(int posX, int posY, int width, int height, Color color);
+}
