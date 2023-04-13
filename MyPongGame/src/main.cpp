@@ -108,7 +108,8 @@ void MainMenu(Paddle& leftPaddle, Paddle& rightPaddle, Ball& ball, Score& update
 		DrawText("Lucas Wittingslow C++ PONG ", s_ScreenWidth / 2, s_ScreenHeight / 2, 30, GREEN);
 		DrawText("MAIN MENU", s_ScreenWidth / 2 - 380, s_ScreenHeight / 2 - 50, 50, WHITE);
 		DrawText("Press SPACE to PLAY", s_ScreenWidth / 2 - 380, s_ScreenHeight / 2 + 50, 25, WHITE);
-
+		DrawText("Left Paddle keys W (Up) and S (Down)", s_ScreenWidth / 2 - 380,  50, 25, WHITE);
+		DrawText("Right Paddle keys Up (Up) and Down (Down)", s_ScreenWidth / 2 - 380,  100, 25, WHITE);
 		if (IsKeyPressed(KEY_SPACE) && !entry)
 		{
 			leftPaddle.overallSize.y = GetScreenHeight() / 2;
@@ -152,6 +153,9 @@ void PauseMenu(Paddle& leftPaddle, Paddle& rightPaddle, Ball& ball, Score& updat
 		DrawText("Press SPACE to Continue", s_ScreenWidth / 4, s_ScreenHeight / 2 + 70, 25, WHITE);
 		DrawText("Press ESC to Exit Game", s_ScreenWidth / 4, s_ScreenHeight / 2 + 30, 25, WHITE);
 		DrawText("Press R to Reset", s_ScreenWidth / 4, s_ScreenHeight / 2 - 10, 25, WHITE);
+		DrawText("Left Paddle keys W (Up) and S (Down)", s_ScreenWidth / 2 - 380, 50, 25, WHITE);
+		DrawText("Right Paddle keys Up (Up) and Down (Down)", s_ScreenWidth / 2 - 380, 100, 25, WHITE);
+
 
 		//STATEMENTS TO BUTTON PRESSES
 		if (IsKeyPressed(KEY_SPACE) && !entry)
